@@ -90,9 +90,7 @@
 
 #include <iostream>
 
-#ifndef MEMTRACE
-#error "definialja projekt szinten a MEMTARCE makrot!"
-#endif // MEMTRACE
+
 
 /**
  * A String osztály.
@@ -156,13 +154,21 @@ public:
     }
 
     String(const char* c){
-        len = strlen(c);
-        
-        pData = new char[len+1];
-        for (size_t i = 0; i <= len; i++)
-        {
-            this->pData[i] = c[i];
+        int charlen = 0;
+        while(c[charlen] != '\0'){
+            charlen++;
         }
+        
+        pData = new char[charlen+1];
+        len = charlen;
+        charlen = 0;
+        while (c[charlen] != '\0')
+        {
+            pData[charlen] = c[charlen];
+            charlen++;
+        }
+        pData[charlen] = '\0';
+        
         
         
         

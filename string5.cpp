@@ -22,7 +22,7 @@
 #include <iostream>             // Kiíratáshoz
 #include <cstring>              // Sztringműveletekhez
 
-#include "memtrace.h"           // a standard headerek után kell lennie
+         // a standard headerek után kell lennie
 #include "string5.h"
 
 
@@ -104,19 +104,18 @@ String operator+(const char& c, const String& str) {
     return a + str;
 }
 
-bool String::operator==(const String& s){
-    if (strlen != s.strlen)
-    {
-        return false
-    }
-    for (size_t i = 0; i < strlen; i++)
-    {
-        if (s[i] != this[i])
-        {
-            return false;
+bool String::operator==(const String& s) const {
+      if (len != s.len) {
+        return false;
         }
-        
+
+  for (size_t i = 0; i < len; ++i) {
+        if (pData[i] != s.pData[i]) {
+            return false; 
+        }
     }
+
+  
     return true;
     
     

@@ -15,8 +15,8 @@
         int getmegallokszama(){return megallokszama;}
         int getmaxhely(){return maxhely;}
         void jaratkiir();
-
-        Jarat operator=(const Jarat& jarat);
+        void sethely(int n){maxhely = n;}
+        Jarat& operator=(const Jarat& jarat);
 
         ~Jarat(){
             delete[] idopont;
@@ -53,25 +53,29 @@
         void setido(int ido){idopont = ido;}
         void Nyomtat();
 
-        Jegy operator=(const Jegy& jegy){
+        Jegy& operator=(const Jegy& jegy){
             nev = jegy.nev;
             kedvezmenyes = jegy.kedvezmenyes;
             kezdomegallo = jegy.kezdomegallo;
             celmegallo = jegy.celmegallo;
             idopont = jegy.idopont;
+
+            return *this;
         }
       
     };
 
     class Menetrend{
-        Jarat* jaratok;
+        Jarat* jaratok; 
         Jegy* jegyek;
         int jaratokszama;
         int jegyekszama;
+        
         public:
+        Menetrend(): jaratok(nullptr), jegyek(nullptr), jaratokszama(0), jegyekszama(0){};
         void jegyhozzaad(const Jegy& jegy);
         void jarathozzaad(const Jarat& jarat);
-        void jegykeres(String kezdo, String cel);
+        Jarat* jegykeres(String kezdo, String cel);
         void menetrendKiir();
         void menetrendbetolt(const char* filename);
         ~Menetrend(){delete[] jaratok; delete[] jegyek;}

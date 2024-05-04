@@ -5,19 +5,19 @@
 Jarat::Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam): maxhely(maxh), hely(helyek), megallok(megallok), idopont(idopont), megallokszama(szam){};
 
 void Jarat::jaratkiir(){
-    for (size_t i = 0; i < megallokszama; i++)
+    for (int i = 0; i < megallokszama; i++)
     {
         std::cout << megallok[i] << " ";
     }
     std::cout << std::endl;
-    for (size_t i = 0; i < megallokszama; i++)
+    for (int i = 0; i < megallokszama; i++)
     {
         std::cout << idopont[i];
     }
     
 }
 
-Jarat Jarat::operator=(const Jarat& jarat){
+Jarat& Jarat::operator=(const Jarat& jarat){
     maxhely = jarat.maxhely;
     delete[] hely;
     megallokszama = jarat.megallokszama;
@@ -26,12 +26,13 @@ Jarat Jarat::operator=(const Jarat& jarat){
     megallok = new String[megallokszama];
     delete[] idopont;
     idopont = new int[megallokszama];
-    for (size_t i = 0; i < megallokszama; i++)
+    for (int i = 0; i < megallokszama; i++)
     {
         hely[i] = jarat.hely[i];
         megallok[i] = jarat.megallok[i];
         idopont[i] = jarat.idopont[i];
     }
+    return *this;
     
 }
 
@@ -39,23 +40,23 @@ void Jegy::Nyomtat(){
     std::cout << "Részletek: " << std::endl;
 }
 
-Menetrend::Menetrend(): jaratok(nullptr), jegyek(nullptr), jaratokszama(0), jegyekszama(0){};
+
 
 void Menetrend::jegyhozzaad(const Jegy& jegy){
     Jegy* tmp = new Jegy[jegyekszama+1];
-    for (size_t i = 0; i < jegyekszama; i++)
+    for (int i = 0; i < jegyekszama; i++)
     {
         tmp[i] = jegyek[i];
     }
-    jegyekszama++;
     tmp[jegyekszama] = jegy;
+    jegyekszama++;
     
 
 }
 
 void Menetrend::jarathozzaad(const Jarat& jarat){
     Jarat* tmp = new Jarat[jaratokszama+1];
-    for (size_t i = 0; i < jaratokszama; i++)
+    for (int i = 0; i < jaratokszama; i++)
     {
         tmp[i] = jaratok[i];
     }
@@ -64,13 +65,13 @@ void Menetrend::jarathozzaad(const Jarat& jarat){
     
 }
 
-void Menetrend::jegykeres(String kezdo, String cel){
+Jarat* Menetrend::jegykeres(String kezdo, String cel){
     int talalt1 = -1;
     int talalt2 = -1;
-    for (size_t i = 0; i < jaratokszama; i++)
+    for (int i = 0; i < jaratokszama; i++)
     {
             String* tmp = jaratok[i].getmegallok();
-        for (size_t j = 0; j < jaratok[i].getmegallokszama(); j++)
+        for (int j = 0; j < jaratok[i].getmegallokszama(); j++)
         {
             if (tmp[j] == kezdo)
             {
@@ -84,20 +85,24 @@ void Menetrend::jegykeres(String kezdo, String cel){
 
         
     }
-    if (talalt1 == talalt2) // a két feltételt fel kell cserélni :D
+    if (talalt1 == -1 || talalt2 == -1) // a két feltételt fel kell cserélni :D
     {
-        std::cout << "van talalat" << std::endl;
-        
-    }else if(talalt1 == -1 || talalt2 == -1){
-    
             std::cout << "nincs ilyen útvonal";
+            return nullptr;
+        
+    }else if(talalt1 == talalt2){
+    
+        std::cout << "van talalat" << std::endl;
+        Jarat* lista = new Jarat[1];
+        lista[0] = jaratok[talalt1];
+        return lista;
     
     }else{
         Menetrend lehetseges;
-        for (size_t i = 0; i < jaratokszama; i++)
+        for (int i = 0; i < jaratokszama; i++)
         {
             String* tmp = jaratok[i].getmegallok();
-            for (size_t j = 0; j < jaratok[i].getmegallokszama(); j++)
+            for (int j = 0; j < jaratok[i].getmegallokszama(); j++)
             {
                 if (tmp[j] == cel || tmp[j] == kezdo)
                 {
@@ -109,17 +114,18 @@ void Menetrend::jegykeres(String kezdo, String cel){
             
         }
         
-        //közös pontok vizsgálata
+        //közös pontok vizsgálata majd később
+        
 
     }
 
-    
+    return nullptr;
     
 }
 
 void Menetrend::menetrendKiir(){
     std::cout << "Menetrend";
-    for (size_t i = 0; i < jaratokszama; i++)
+    for (int i = 0; i < jaratokszama; i++)
     {
        jaratok[i].jaratkiir();
     }
