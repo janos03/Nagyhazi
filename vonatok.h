@@ -9,8 +9,11 @@
         int* idopont;
         int megallokszama;
         public:
+
         Jarat(): maxhely(0), hely(nullptr), megallok(nullptr), idopont(nullptr), megallokszama(0){};
         Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam);
+        Jarat(const Jarat& jarat);
+
         String* getmegallok(){return megallok;}
         int getmegallokszama(){return megallokszama;}
         int getmaxhely(){return maxhely;}
@@ -18,6 +21,7 @@
         void sethely(int n){maxhely = n;}
         Jarat& operator=(const Jarat& jarat);
         void jaratkiir_fajlba(std::ofstream& file);
+        void jegyfoglal(int hely_index);
         ~Jarat(){
             delete[] idopont;
             delete[] megallok;
@@ -64,24 +68,52 @@
         }
       
     };
+    
+    class Jegyatszallas: public Jegy{
+    String atszallas;
+    public:
+    Jegyatszallas() : Jegy(), atszallas("") {}
+    Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String atsz) 
+        : Jegy(n, kedv, kezdo, cel, ido), atszallas(atsz) {}
+
+    void atszallasNyomtat() {
+        Nyomtat(); 
+        std::cout << "Átszállás: " << atszallas << std::endl;
+        
+    }
+    
+
+
+};
 
     class Menetrend{
         Jarat* jaratok; 
         Jegy* jegyek;
+        Jegyatszallas* jegyekatszallas;
         int jaratokszama;
         int jegyekszama;
-        
+        int jegyekatszallassaldb;
         
         public:
-        Menetrend(): jaratok(nullptr), jegyek(nullptr), jaratokszama(0), jegyekszama(0){};
+        Menetrend(): jaratok(nullptr), jegyek(nullptr), jegyekatszallas(nullptr),jaratokszama(0), jegyekszama(0), jegyekatszallassaldb(0){};
         void jegyhozzaad(const Jegy& jegy);
+        void jegyatszallashozzaad(const Jegyatszallas& jegy);
         void jarathozzaad(const Jarat& jarat);
         Menetrend jegykeres(String kezdo, String cel);
         void menetrendKiir();
+        Jarat* getjaratok() const { return jaratok; }
+        Jegy* getjeyek() const{ return jegyek;}
+        Jegyatszallas* getjegyekatszallassal() const {return jegyekatszallas;}
         int getjaratokszama(){return jaratokszama;};
+        int getjegyekszama() {return jegyekszama;}
+        int getjegyekatszallassaldb() {return jegyekatszallassaldb;}
+        void menetrend_kiir_fajlba(const char* filename);
         void menetrendbetolt(const char* filename);
+
         ~Menetrend(){delete[] jaratok; delete[] jegyek;}
 
     };
 
 #endif
+
+

@@ -105,18 +105,19 @@ String operator+(const char& c, const String& str) {
 }
 
 bool String::operator==(const String& s) const {
-      if (len != s.len) {
+   if (len != s.len) {
         return false;
-        }
+    }
 
-  for (size_t i = 0; i < len; ++i) {
+    // Végigiterálás az összes karakteren, és összehasonlítás
+    for (size_t i = 0; i < len; ++i) {
         if (pData[i] != s.pData[i]) {
-            return false; 
+            return false; // Ha találtunk eltérést, azonnal térjen vissza hamissal
         }
     }
 
-  
+    // Ha minden karakter megegyezik, akkor visszatérhetünk igazzal
     return true;
-    
-    
 }
+
+
