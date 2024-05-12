@@ -22,7 +22,7 @@
 #include <iostream>             // Kiíratáshoz
 #include <cstring>              // Sztringműveletekhez
 
-         // a standard headerek után kell lennie
+     // a standard headerek után kell lennie
 #include "string5.h"
 
 

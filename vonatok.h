@@ -110,7 +110,7 @@
         void menetrend_kiir_fajlba(const char* filename);
         void menetrendbetolt(const char* filename);
 
-        ~Menetrend(){delete[] jaratok; delete[] jegyek;}
+        ~Menetrend(){delete[] jaratok; delete[] jegyek; delete[] jegyekatszallas;}
 
     };
 
