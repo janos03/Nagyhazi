@@ -19,11 +19,12 @@
         int getmegallokszama(){return megallokszama;}
         int getmaxhely(){return maxhely;}
         int getidopont(int index){return idopont[index];}
+        int gethely(int i){return hely[i];}
         void jaratkiir();
         void sethely(int n){maxhely = n;}
         Jarat& operator=(const Jarat& jarat);
         void jaratkiir_fajlba(std::ofstream& file);
-        void jegyfoglal(int hely_index);
+        bool jegyfoglal(int hely_index);
         ~Jarat(){
             delete[] idopont;
             delete[] megallok;
@@ -39,22 +40,26 @@
         String kezdomegallo;
         String celmegallo;
         int idopont;
+        int helyszam;
         public:
-        Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0) {};
+        Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0), helyszam(0) {};
         Jegy(String n, bool kedv , String kezdo, String cel, int ido){
             nev = n;
             kedvezmenyes = kedv;
             kezdomegallo = kezdo;
             celmegallo = cel;
             idopont = ido;
+            helyszam = -1;
         }
         String getnev()const {return nev;}
+        int gethelyszan() const {return helyszam;}
         bool getkedvezmenyes() const {return kedvezmenyes;}
         String getkezdomegallo()const{ return kezdomegallo;}
         String getcelmegallo()const{return celmegallo;}
         int getidopont()const{return idopont;}
         void setcel(String cel){celmegallo = cel;}
         void setido(int ido){idopont = ido;}
+        void sethelyszam(int hely){helyszam = hely;}
         virtual void Nyomtat()const;
         virtual void jegykiirfajlba(const char* filename)const;
         Jegy& operator=(const Jegy& jegy){

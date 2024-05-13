@@ -105,6 +105,19 @@ int main() {
             }
             case 3: {
                 std::cout << "Kilépés..." << std::endl;
+                Jegy* jegyek = menetrend.getjegyek();
+                Jegyatszallas* jegyekat = menetrend.getjegyekatszallassal();
+                for (int i = 0; i < menetrend.getjegyekszama(); i++)
+                {
+                    jegyek[i].Nyomtat();
+                    jegyek[i].jegykiirfajlba("tesztjegy");
+                }
+                for (int i = 0; i < menetrend.getjegyekatszallassaldb(); i++)
+                {
+                    jegyekat[i].Nyomtat();
+                    jegyekat[i].jegykiirfajlba("tesztjegy");
+
+                }
                 break; }      
             case 4: {
 
