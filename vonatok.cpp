@@ -402,19 +402,19 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
                 jegy.sethelyszam(jarathely[0].gethely(kezdo));
                 std::cout <<jarathely[0].gethely(kezdo) << " ez a helyzám";
                 menetrend.jegyhozzaad(jegy);
+                std::cout << "Jegy sikeresen vásárolva." << std::endl;
+                for (int i = 0; i < talalt.getjaratokszama(); i++)
+                {
+                frissitJarat(menetrend, jarathely[i]);
+                }
               
             }
             
             
         }
-        for (int i = 0; i < talalt.getjaratokszama(); i++)
-        {
-            frissitJarat(menetrend, jarathely[i]);
-        }
         
 
         
-        std::cout << "Jegy sikeresen vásárolva." << std::endl;
     //Átszállásos jegy kezelése:
     //#################################################################
 
@@ -463,15 +463,15 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
             
                     jegy.sethelyszam(jarathely[0].gethely(kezdo));
                     menetrend.jegyhozzaad(jegy_atszallas);
-                }
+                    std::cout << "Átszállási jegy sikeresen vásárolva." << std::endl;
                 for (int i = 0; i < talalt.getjaratokszama(); i++)
-                {
+                    {
                     frissitJarat(menetrend, jarathely[i]);
+                    }
                 }
                 
             
             
-            std::cout << "Átszállási jegy sikeresen vásárolva." << std::endl;
         } else {
             std::cout << "Nincs közös megálló a két járat között." << std::endl;
         }

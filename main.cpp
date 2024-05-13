@@ -197,6 +197,7 @@ int main() {
                 Jarat uj_jarat(jaratszam ,maxh, helyek, megallok, idopontok, megallok_szama);
     
                 // Hozzáadjuk az új járatot a menetrendhez
+                
                 menetrend.jarathozzaad(uj_jarat);
 
                 // Felszabadítjuk a dinamikusan foglalt memóriát
