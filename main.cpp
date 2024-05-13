@@ -32,6 +32,7 @@ void clear(){
 
 int main() {
     Menetrend menetrend;
+   
    /*
     String helyek[] ={"A", "B", "C"};
     String helyek1[] ={"B", "C", "D"};
@@ -39,15 +40,17 @@ int main() {
     String helyek3[] ={"E", "F", "G"};
     int h[] ={3,3,3};
     int ido[] ={100,200,300};
-    Jarat j(3,h, helyek,ido,3);
-    Jarat j1(3,h,helyek1,ido,3);
-    Jarat j2(3,h,helyek2,ido,3);
-    Jarat j3(3,h,helyek3,ido,3);
+    Jarat j(0,3,h, helyek,ido,3);
+    Jarat j1(1,3,h,helyek1,ido,3);
+    Jarat j2(2,3,h,helyek2,ido,3);
+    Jarat j3(3,3,h,helyek3,ido,3);
+    std::cout << j.getjaratszam() << std::endl;
     menetrend.jarathozzaad(j);
     menetrend.jarathozzaad(j1);
     menetrend.jarathozzaad(j2);
     menetrend.jarathozzaad(j3);
    */ 
+   
     int choice;
     do {
         displayMenu();
@@ -190,7 +193,8 @@ int main() {
                 }
 
                 // Létrehozzuk a Jarat objektumot az adatokból
-                Jarat uj_jarat(maxh, helyek, megallok, idopontok, megallok_szama);
+                int jaratszam = menetrend.getjaratokszama()+1;
+                Jarat uj_jarat(jaratszam ,maxh, helyek, megallok, idopontok, megallok_szama);
     
                 // Hozzáadjuk az új járatot a menetrendhez
                 menetrend.jarathozzaad(uj_jarat);

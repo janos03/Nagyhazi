@@ -11,8 +11,8 @@
 //Tagfüggvények:--------------------------------------------------------
 
 //Járat konstruktora:
-Jarat::Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam)
-    : maxhely(maxh), megallokszama(szam) {
+Jarat::Jarat(int jaratszam, int maxh, int* helyek, String* megallok, int* idopont, int szam)
+    :jaratszam(jaratszam), maxhely(maxh), megallokszama(szam) {
     hely = new int[megallokszama];
     this->idopont = new int[megallokszama];
     this->megallok = new String[megallokszama];
@@ -25,7 +25,7 @@ Jarat::Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam)
 }
 
 Jarat::Jarat(const Jarat& jarat)
-    : maxhely(jarat.maxhely), megallokszama(jarat.megallokszama) {
+    :jaratszam(jarat.jaratszam), maxhely(jarat.maxhely), megallokszama(jarat.megallokszama) {
     hely = new int[megallokszama];
     idopont = new int[megallokszama];
     megallok = new String[megallokszama];
@@ -39,6 +39,7 @@ Jarat::Jarat(const Jarat& jarat)
 
 //Kiírja a megállókat illetve az időpontokat;
 void Jarat::jaratkiir(){
+    std::cout << jaratszam << std::endl;
     for (int i = 0; i < megallokszama; i++)
     {
         std::cout << megallok[i] << " ";
@@ -60,6 +61,7 @@ Jarat& Jarat::operator=(const Jarat& jarat) {
 
     maxhely = jarat.maxhely;
     megallokszama = jarat.megallokszama;
+    jaratszam = jarat.jaratszam;
 
     delete[] hely;
     delete[] idopont;
@@ -282,6 +284,7 @@ void Menetrend::menetrendKiir()const{
 }
 
 void Jarat::jaratkiir_fajlba(std::ofstream& file) {
+    file << jaratszam << std::endl;
     file << megallokszama << std::endl; 
     for (int i = 0; i < megallokszama; i++) {
         file << hely[i] << " "; 
@@ -317,11 +320,13 @@ void Menetrend::menetrendbetolt(const char* filename) {
     }
 
     while (true) {
-        int megallokszam;
-        file >> megallokszam;
         if (file.eof()) { // Ellenőrizzük, hogy elértük-e a fájl végét
             break; // Ha igen, kilépünk a ciklusból
         }
+        int jaratszam;
+        int megallokszam;
+        file >> jaratszam;
+        file >> megallokszam;
         
         int* helyek = new int[megallokszam];
         char** megallok_tmp = new char*[megallokszam];
@@ -347,7 +352,7 @@ void Menetrend::menetrendbetolt(const char* filename) {
         }
 
         // Jarat objektum létrehozása és hozzáadása a menetrendhez
-        Jarat jarat(megallokszam, helyek, megallok, idopontok, megallokszam);
+        Jarat jarat(jaratszam, megallokszam, helyek, megallok, idopontok, megallokszam);
         jarathozzaad(jarat);
 
         // Dinamikusan foglalt memória felszabadítása
@@ -397,6 +402,11 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
             
             
         }
+        for (int i = 0; i < talalt.getjaratokszama(); i++)
+        {
+            frissitJarat(menetrend, jarathely[i]);
+        }
+        
 
         
         std::cout << "Jegy sikeresen vásárolva." << std::endl;
@@ -449,7 +459,11 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
                     jegy.sethelyszam(jarathely[0].gethely(kezdo));
                     menetrend.jegyhozzaad(jegy_atszallas);
                 }
-            
+                for (int i = 0; i < talalt.getjaratokszama(); i++)
+                {
+                    frissitJarat(menetrend, jarathely[i]);
+                }
+                
             
             
             std::cout << "Átszállási jegy sikeresen vásárolva." << std::endl;
@@ -460,3 +474,17 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
         std::cout << "Érvénytelen választás. Kérem válasszon újra." << std::endl;
     }
 }
+void frissitJarat(Menetrend& menetrend, Jarat& ujJarat) {
+    Jarat* jaratok = menetrend.getjaratok();
+    int jaratokSzama = menetrend.getjaratokszama();
+    
+    // Megkeressük a járatot az azonosító alapján
+    for (int i = 0; i < jaratokSzama; ++i) {
+        if (jaratok[i].getjaratszam() == ujJarat.getjaratszam()) {
+            // Ha megtaláltuk a megfelelő járatot, felülírjuk azt az új járattal
+            jaratok[i] = ujJarat;
+            break; 
+        }
+    }
+}
+

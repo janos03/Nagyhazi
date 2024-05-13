@@ -4,6 +4,7 @@
 
 // Jarat osztály
     class Jarat {
+        int jaratszam;
         int maxhely;
         int* hely;
         String* megallok;
@@ -11,8 +12,8 @@
         int megallokszama;
         public:
 
-        Jarat(): maxhely(0), hely(nullptr), megallok(nullptr), idopont(nullptr), megallokszama(0){};
-        Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam);
+        Jarat():jaratszam(0), maxhely(0), hely(nullptr), megallok(nullptr), idopont(nullptr), megallokszama(0){};
+        Jarat(int jaratszam ,int maxh, int* helyek, String* megallok, int* idopont, int szam);
         Jarat(const Jarat& jarat);
 
         String* getmegallok(){return megallok;}
@@ -20,6 +21,7 @@
         int getmaxhely(){return maxhely;}
         int getidopont(int index){return idopont[index];}
         int gethely(int i){return hely[i];}
+        int getjaratszam(){return jaratszam;}
         void jaratkiir();
         void sethely(int n){maxhely = n;}
         Jarat& operator=(const Jarat& jarat);
@@ -122,6 +124,7 @@
 
     };
     void jegyteszt(Menetrend& menetrend, Jegy& jegy);
+    void frissitJarat(Menetrend& menetrend, Jarat& ujJarat);
 #endif
 
 
