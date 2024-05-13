@@ -3,6 +3,14 @@
 #include "string5.h"
 #include "vonatok.h"
 
+//----------------------------------------------------------------------------
+//  vonatok.cpp, ebben a fájlban van megvalósítva a legtöbb tagfüggvény, és pár globális függvény is
+//  Minden olyan függvény ami pár sorból áll azt a vonatok.h-ban van megírva
+//----------------------------------------------------------------------------
+
+//Tagfüggvények:--------------------------------------------------------
+
+//Járat konstruktora:
 Jarat::Jarat(int maxh, int* helyek, String* megallok, int* idopont, int szam)
     : maxhely(maxh), megallokszama(szam) {
     hely = new int[megallokszama];
@@ -29,6 +37,7 @@ Jarat::Jarat(const Jarat& jarat)
     }
 }
 
+//Kiírja a megállókat illetve az időpontokat;
 void Jarat::jaratkiir(){
     for (int i = 0; i < megallokszama; i++)
     {
@@ -42,6 +51,7 @@ void Jarat::jaratkiir(){
     std::cout << std::endl;
     
 }
+
 
 Jarat& Jarat::operator=(const Jarat& jarat) {
     if (this == &jarat) {
@@ -68,7 +78,8 @@ Jarat& Jarat::operator=(const Jarat& jarat) {
     return *this;
 }
 
-void Jegy::Nyomtat() {
+//kiíírja a képernyőre a jegy információit
+void Jegy::Nyomtat() const{
     std::cout << "Név: " << nev << std::endl;
     std::cout << "Kedvezményes: " << (kedvezmenyes ? "Igen" : "Nem") << std::endl;
     std::cout << "Kezdő megálló: " << kezdomegallo << std::endl;
@@ -78,16 +89,51 @@ void Jegy::Nyomtat() {
     std::cout << "Indulás időpontja: " << ora << ":" << perc << std::endl;
 }
 
+//Jegy információk kiírása egy fájlba, "hasonlít" egy valódi jegyhez, ez a valódi nyomtatás
+
+void Jegy::jegykiirfajlba(const char* filename) const{
+    std::ofstream file(filename, std::ios::app); // Hozzáfüzés mód beállítása
+    if (!file.is_open())
+    {
+        std::cerr << "Hiba: A fájl nem nyitható meg.";
+        return;
+    }
+    file.exceptions(std::ifstream::badbit);
+    file << "------------------------" << std::endl;
+    file << "      Menetjegy      " << std:: endl;
+    file << std::endl;
+    file << "Név: " << nev << std::endl;
+    file << "Kedvezményes: " << (kedvezmenyes ? "igen" : "nem") << std::endl;
+    file << "Időpont: " << idopont/60 << ":" << idopont%60 <<std::endl;
+    file << "Kezdőmegálló: " << kezdomegallo << std::endl;
+    file << "Célállomás: " << celmegallo << std::endl;
+    file << "-------------------------" << std::endl;
+    file.close();
+}
+
+void Jegyatszallas::jegykiirfajlba(const char* filename) const{
+        Jegy::jegykiirfajlba(filename);
+        std::ofstream file(filename, std::ios::app);
+        file.exceptions(std::ifstream::badbit);
+        file << "Átszállás: " << atszallas << std::endl;
+        file << "-----------------------" << std::endl;
+        file.close();
+}
+
+//jelenleg nem használt függvény, célja a  helyfoglalás lebonyolítása lenne, erre még nem találtam ki a pontos metódust, maximum annyi lesz, hogy ahol járat van ott 1-el csökkent, de benne hagyok mintdent hogy később implementálható legyen. UPDATE!!!: Megoldottam és ezzel már működik a helyfoglalás
+
+
 void Jarat::jegyfoglal(int hely_index) {
-        if (hely[hely_index] >= 0)
+        if (hely[hely_index] >= 0 && hely[hely_index] < maxhely)
         {
-            hely[hely_index]--;
+            hely[hely_index]++;
         }else{
           std::cout <<  "Sajnálom nincs elég hely a vonaton." << std::endl; 
         }
         
 }
 
+//jegy hozzáadása a jegy listához a menetrend osztályban
 void Menetrend::jegyhozzaad(const Jegy& jegy){
 
     Jegy* tmp = new Jegy[jegyekszama+1];
@@ -102,7 +148,8 @@ void Menetrend::jegyhozzaad(const Jegy& jegy){
 
 }
 
-void Menetrend::jegyatszallashozzaad(const Jegyatszallas& jegy) {
+//ugyanazt mint az előző csak az átszállásos jegyeknél
+void Menetrend::jegyhozzaad(const Jegyatszallas& jegy) {
         Jegyatszallas* tmp = new Jegyatszallas[jegyekatszallassaldb + 1];
         for (int i = 0; i < jegyekatszallassaldb; i++) {
             tmp[i] = jegyekatszallas[i];
@@ -111,7 +158,7 @@ void Menetrend::jegyatszallashozzaad(const Jegyatszallas& jegy) {
         jegyekatszallas = tmp;
         jegyekatszallas[jegyekatszallassaldb++] = jegy;
     }
-
+//járat hozzáadása a menetrendhez
  void Menetrend::jarathozzaad(const Jarat& jarat) {
         
             Jarat* tmp = new Jarat[jaratokszama+1];
@@ -123,7 +170,7 @@ void Menetrend::jegyatszallashozzaad(const Jegyatszallas& jegy) {
         
         jaratok[jaratokszama++] = jarat;
     }
-
+//jegy keresés, legbonyolultabb algoritmus, egy BFS keresés
 Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     Menetrend utvonal;
     bool talalt_kezdo = false;
@@ -203,12 +250,25 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     delete[] bejart;
     delete[] sor;
     delete[] szulo;
+
+    // Helyfoglalás leegyszerűsítve |update|!!!!: megoldottam így ez feleslegesség vált, de a sethely függvényt nem törlöm ki.
+
+    /*Jarat* jarathely = utvonal.getjaratok();
+    for (int i = 0; i < utvonal.getjaratokszama(); i++)
+    {
+        int hely = jarathely[i].getmaxhely();
+        if (hely <= 0)
+        {
+            std::cout << "Nincs elég hely a vonaton." ;
+        }
+        
+        jarathely[i].sethely(hely-1);
+    }*/
+    
     return utvonal;
 }
 
-
-
-void Menetrend::menetrendKiir(){
+void Menetrend::menetrendKiir()const{
     std::cout << "Menetrend" << std::endl;;
     for (int i = 0; i < jaratokszama; i++)
     {
@@ -234,7 +294,7 @@ void Jarat::jaratkiir_fajlba(std::ofstream& file) {
     file << std::endl;
 }
 
-void Menetrend::menetrend_kiir_fajlba(const char* filename) {
+void Menetrend::menetrend_kiir_fajlba(const char* filename)const {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Hiba: A fájl nem nyitható meg." << std::endl;
@@ -298,3 +358,79 @@ void Menetrend::menetrendbetolt(const char* filename) {
 }
 
 
+//Globális függvények:-------------------------------------------------------------
+
+void jegyteszt(Menetrend& menetrend, Jegy& jegy){
+Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegallo());
+    
+    if (talalt.getjaratokszama() == 1) {
+        menetrend.jegyhozzaad(jegy);
+        Jarat* jarathely = talalt.getjaratok();
+        int kezdo;
+        int cel;
+        for (int i = 0; i < talalt.getjaratokszama(); i++)
+        {
+            String* megallok = jarathely[i].getmegallok();
+            // Nem foglalkozok azzal ha valaki A-ból A ba megy akkor sétáljon és ne vegyen jegyet
+            for (int j = 0; j < jarathely[i].getmegallokszama(); j++) 
+            {
+                if (megallok[j] == jegy.getkezdomegallo()){kezdo = j; jegy.setido(jarathely[i].getidopont(j));}else if(megallok[j] == jegy.getcelmegallo()){cel = j;} 
+            }
+
+            for (int j = kezdo; j < cel ; j++){jarathely[i].jegyfoglal(j);}
+            
+        }
+
+        
+        std::cout << "Jegy sikeresen vásárolva." << std::endl;
+    } else if (talalt.getjaratokszama() == 2) {
+        // Ellenőrizzük, hogy a két járat között van-e közös pont
+        String* kezdo_megallok = talalt.getjaratok()[0].getmegallok();
+        String* cel_megallok = talalt.getjaratok()[1].getmegallok();
+        String atszallas_megallo;
+        for (int i = 0; i < talalt.getjaratok()[0].getmegallokszama(); ++i) {
+            for (int j = 0; j < talalt.getjaratok()[1].getmegallokszama(); ++j) {
+                if (kezdo_megallok[i] == cel_megallok[j]) {
+                    atszallas_megallo = kezdo_megallok[i];
+                    break;
+                }
+            }
+        }
+        if (!(atszallas_megallo=="")) {
+            Jegyatszallas jegy_atszallas(jegy.getnev(), true, jegy.getkezdomegallo(), jegy.getcelmegallo(), jegy.getidopont(), atszallas_megallo);
+            menetrend.jegyhozzaad(jegy_atszallas);
+            Jarat* jarathely = talalt.getjaratok();
+            int kezdo;
+            int cel;
+            //amiatt kell 2 darab atszallasindex jelző, mert az első járatban nem feltétlen ugyanazon a helyen van mint a második járatban 
+            int atszallas1 = -1, atszallas2;
+            for (int i = 0; i < talalt.getjaratokszama(); i++)
+            {
+                String* megallok = jarathely[i].getmegallok();
+                // Nem foglalkozok azzal ha valaki A-ból A ba megy akkor sétáljon és ne vegyen jegyet
+                for (int j = 0; j < jarathely[i].getmegallokszama(); j++) 
+                {
+                    if (megallok[j] == jegy.getkezdomegallo()){kezdo = j;}else if(megallok[j] == jegy.getcelmegallo()){cel = j;}else if(megallok[j] == atszallas_megallo){atszallas2 = j;}else if(atszallas1 == -1 && megallok[j] == atszallas_megallo){atszallas1 = j;}
+                }
+                
+                
+            }
+            
+            for (int i = kezdo; i < atszallas1; i++)
+            {
+                jarathely[1].jegyfoglal(i);
+            }
+            for (int i = atszallas2; i < cel; i++)
+            {
+                jarathely[0].jegyfoglal(i);
+            }
+            
+            
+            std::cout << "Átszállási jegy sikeresen vásárolva." << std::endl;
+        } else {
+            std::cout << "Nincs közös megálló a két járat között." << std::endl;
+        }
+    } else {
+        std::cout << "Érvénytelen választás. Kérem válasszon újra." << std::endl;
+    }
+}

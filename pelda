@@ -1,0 +1,36 @@
+5
+5 6 7 6 5
+Veszprém Pécs Győr Szombathely Debrecen
+100 200 300 400 500
+6
+6 5 4 7 6 5
+Székesfehérvár Miskolc Szeged Kaposvár Nyíregyháza Eger
+200 300 400 500 600 700
+5
+4 6 7 5 6
+Győr Debrecen Kecskemét Veszprém Miskolc
+300 400 500 600 700
+6
+7 6 5 4 6 5
+Nyíregyháza Szeged Pécs Székesfehérvár Eger Kaposvár
+400 500 600 700 800 900
+5
+6 5 7 6 4
+Szombathely Kaposvár Debrecen Győr Szeged
+500 600 700 800 900
+7
+4 5 6 7 5 6 5
+Debrecen Nyíregyháza Veszprém Eger Székesfehérvár Kecskemét Pécs
+600 700 800 900 1000 1100 1200
+6
+5 6 5 7 6 4
+Eger Szombathely Győr Miskolc Szeged Nyíregyháza
+700 800 900 1000 1100 1200
+4
+7 6 5 4
+Kecskemét Pécs Székesfehérvár Debrecen
+800 900 1000 1100
+6
+5 6 4 7 6 5
+Pécs Székesfehérvár Nyíregyháza Győr Kaposvár Debrecen
+900 1000 1100 1200 1300 1400

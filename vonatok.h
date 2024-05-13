@@ -2,6 +2,7 @@
 #define VONATOK_H
 #include "string5.h"
 
+// Jarat osztály
     class Jarat {
         int maxhely;
         int* hely;
@@ -17,6 +18,7 @@
         String* getmegallok(){return megallok;}
         int getmegallokszama(){return megallokszama;}
         int getmaxhely(){return maxhely;}
+        int getidopont(int index){return idopont[index];}
         void jaratkiir();
         void sethely(int n){maxhely = n;}
         Jarat& operator=(const Jarat& jarat);
@@ -30,6 +32,7 @@
 
     };
 
+// Jegy osztály
     class Jegy{
         String nev;
         bool kedvezmenyes;
@@ -45,18 +48,15 @@
             celmegallo = cel;
             idopont = ido;
         }
-        String getnev(){return nev;}
-        bool getkedvezmenyes(){return kedvezmenyes;}
-        String getkezdomegallo(){ return kezdomegallo;}
-        String getcelmegallo(){return celmegallo;}
-        int getidopont(){return idopont;}
-        void setnev(String n){nev =n;}
-        void setkedv(bool kedv){kedvezmenyes = kedv;}
-        void setkezdo(String kezdo){kezdomegallo = kezdo;}
+        String getnev()const {return nev;}
+        bool getkedvezmenyes() const {return kedvezmenyes;}
+        String getkezdomegallo()const{ return kezdomegallo;}
+        String getcelmegallo()const{return celmegallo;}
+        int getidopont()const{return idopont;}
         void setcel(String cel){celmegallo = cel;}
         void setido(int ido){idopont = ido;}
-        void Nyomtat();
-
+        virtual void Nyomtat()const;
+        virtual void jegykiirfajlba(const char* filename)const;
         Jegy& operator=(const Jegy& jegy){
             nev = jegy.nev;
             kedvezmenyes = jegy.kedvezmenyes;
@@ -68,7 +68,8 @@
         }
       
     };
-    
+
+// Jegyatszallas osztály
     class Jegyatszallas: public Jegy{
     String atszallas;
     public:
@@ -76,16 +77,18 @@
     Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String atsz) 
         : Jegy(n, kedv, kezdo, cel, ido), atszallas(atsz) {}
 
-    void atszallasNyomtat() {
-        Nyomtat(); 
+    void Nyomtat() const override {
+        Jegy::Nyomtat(); 
         std::cout << "Átszállás: " << atszallas << std::endl;
         
     }
+    void jegykiirfajlba(const char* filename) const;
     
 
 
 };
 
+// Menetrend osztály
     class Menetrend{
         Jarat* jaratok; 
         Jegy* jegyek;
@@ -97,23 +100,23 @@
         public:
         Menetrend(): jaratok(nullptr), jegyek(nullptr), jegyekatszallas(nullptr),jaratokszama(0), jegyekszama(0), jegyekatszallassaldb(0){};
         void jegyhozzaad(const Jegy& jegy);
-        void jegyatszallashozzaad(const Jegyatszallas& jegy);
+        void jegyhozzaad(const Jegyatszallas& jegy);
         void jarathozzaad(const Jarat& jarat);
-        Menetrend jegykeres(String kezdo, String cel);
-        void menetrendKiir();
-        Jarat* getjaratok() const { return jaratok; }
-        Jegy* getjeyek() const{ return jegyek;}
         Jegyatszallas* getjegyekatszallassal() const {return jegyekatszallas;}
-        int getjaratokszama(){return jaratokszama;};
-        int getjegyekszama() {return jegyekszama;}
-        int getjegyekatszallassaldb() {return jegyekatszallassaldb;}
-        void menetrend_kiir_fajlba(const char* filename);
+        Jegy* getjegyek() const{ return jegyek;}
+        Jarat* getjaratok() const { return jaratok; }
+        int getjaratokszama()const{return jaratokszama;};
+        int getjegyekszama()const {return jegyekszama;}
+        int getjegyekatszallassaldb()const {return jegyekatszallassaldb;}
+        void menetrendKiir() const;
+        void menetrend_kiir_fajlba(const char* filename) const;
         void menetrendbetolt(const char* filename);
+        Menetrend jegykeres(String kezdo, String cel);
 
         ~Menetrend(){delete[] jaratok; delete[] jegyek; delete[] jegyekatszallas;}
 
     };
-
+    void jegyteszt(Menetrend& menetrend, Jegy& jegy);
 #endif
 
 
