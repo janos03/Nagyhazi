@@ -320,13 +320,11 @@ void Menetrend::menetrendbetolt(const char* filename) {
     }
 
     while (true) {
-        if (file.eof()) { // Ellenőrizzük, hogy elértük-e a fájl végét
-            break; // Ha igen, kilépünk a ciklusból
-        }
         int jaratszam;
         int megallokszam;
-        file >> jaratszam;
-        file >> megallokszam;
+        if (!(file >> jaratszam >> megallokszam)) { // Ellenőrizzük a beolvasás eredményét
+            break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
+        }
         
         int* helyek = new int[megallokszam];
         char** megallok_tmp = new char*[megallokszam];
@@ -334,14 +332,20 @@ void Menetrend::menetrendbetolt(const char* filename) {
 
         // Adatok beolvasása
         for (int i = 0; i < megallokszam; ++i) {
-            file >> helyek[i];
+            if (!(file >> helyek[i])) {
+                break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
+            }
         }
         for (int i = 0; i < megallokszam; ++i) {
             megallok_tmp[i] = new char[256]; 
-            file >> megallok_tmp[i];
+            if (!(file >> megallok_tmp[i])) {
+                break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
+            }
         }
         for (int i = 0; i < megallokszam; ++i) {
-            file >> idopontok[i];
+            if (!(file >> idopontok[i])) {
+                break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
+            }
         }
 
         // String objektumok létrehozása
@@ -364,6 +368,7 @@ void Menetrend::menetrendbetolt(const char* filename) {
 
     file.close();
 }
+
 
 
 //Globális függvények:-------------------------------------------------------------
