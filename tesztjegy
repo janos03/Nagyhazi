@@ -1,0 +1,74 @@
+------------------------
+      Menetjegy      
+
+Név: teszt1
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: teszt2
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 3:20
+Kezdőmegálló: A
+Célállomás: D
+-------------------------
+Átszállás: C
+-----------------------
+------------------------
+      Menetjegy      
+
+Név: teszt1
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: teszt2
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 3:20
+Kezdőmegálló: A
+Célállomás: D
+-------------------------
+Átszállás: C
+-----------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 3:20
+Kezdőmegálló: B
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 3:20
+Kezdőmegálló: B
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 0
+Időpont: 3:20
+Kezdőmegálló: B
+Célállomás: C
+-------------------------

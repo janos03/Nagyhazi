@@ -175,15 +175,15 @@ void Menetrend::jegyhozzaad(const Jegyatszallas& jegy) {
         
         jaratok[jaratokszama++] = jarat;
     }
-//jegy keresés, legbonyolultabb algoritmus, egy BFS keresés
+//jegy keresés, legbonyolultabb algoritmus az egész feladatban, félek hozzányúlni.... 
 Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     Menetrend utvonal;
     bool talalt_kezdo = false;
     bool talalt_cel = false;
 
-    for (int i = 0; i < jaratokszama; ++i) {
+    for (int i = 0; i < jaratokszama; i++) {
         String* megallok = jaratok[i].getmegallok();
-        for (int j = 0; j < jaratok[i].getmegallokszama(); ++j) {
+        for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
             if (megallok[j] == kezdo) {
                 talalt_kezdo = true;
             }
@@ -198,17 +198,17 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
         return utvonal;
     }
 
+    int* szulo = new int[jaratokszama]; 
     bool* bejart = new bool[jaratokszama]{false}; 
     int* sor = new int[jaratokszama]; 
-    int* szulo = new int[jaratokszama]; 
-    for (int i = 0; i < jaratokszama; ++i) {
+    for (int i = 0; i < jaratokszama; i++) {
         szulo[i] = -1; 
     }
 
     int eleje = 0, hatulja = 0; 
-    for (int i = 0; i < jaratokszama; ++i) {
+    for (int i = 0; i < jaratokszama; i++) {
         String* megallok = jaratok[i].getmegallok();
-        for (int j = 0; j < jaratok[i].getmegallokszama(); ++j) {
+        for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
             if (megallok[j] == kezdo) {
                 bejart[i] = true;
                 sor[hatulja++] = i;
@@ -221,7 +221,7 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     while (eleje != hatulja) {
         int aktiv = sor[eleje++];
         String* megallok = jaratok[aktiv].getmegallok();
-        for (int j = 0; j < jaratok[aktiv].getmegallokszama(); ++j) {
+        for (int j = 0; j < jaratok[aktiv].getmegallokszama(); j++) {
             if (megallok[j] == cel) {
                 utvonal.jarathozzaad(jaratok[aktiv]);
                 int elozo = szulo[aktiv];
@@ -235,7 +235,7 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
                 return utvonal;
             }
         }
-        for (int i = 0; i < jaratokszama; ++i) {
+        for (int i = 0; i < jaratokszama; i++) {
             if (!bejart[i]) {
                 String* masik_megallok = jaratok[i].getmegallok();
                 for (int k = 0; k < jaratok[i].getmegallokszama(); ++k) {
@@ -256,6 +256,7 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     delete[] sor;
     delete[] szulo;
 
+    return utvonal;
     // Helyfoglalás leegyszerűsítve |update|!!!!: megoldottam így ez feleslegesség vált, de a sethely függvényt nem törlöm ki.
 
     /*Jarat* jarathely = utvonal.getjaratok();
@@ -270,7 +271,6 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
         jarathely[i].sethely(hely-1);
     }*/
     
-    return utvonal;
 }
 
 void Menetrend::menetrendKiir()const{
@@ -400,7 +400,7 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
             if (vanhely)
             {
                 jegy.sethelyszam(jarathely[0].gethely(kezdo));
-                std::cout <<jarathely[0].gethely(kezdo) << " ez a helyzám";
+                std::cout <<jarathely[0].gethely(kezdo) << " ez a helyzám"; //érdekesség, ezt kiírja minden jegyvásárláskor és jól... viszont a fájlban már nem jó
                 menetrend.jegyhozzaad(jegy);
                 std::cout << "Jegy sikeresen vásárolva." << std::endl;
                 for (int i = 0; i < talalt.getjaratokszama(); i++)
@@ -437,7 +437,7 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
             int kezdo;
             int cel;
             //amiatt kell 2 darab atszallasindex jelző, mert az első járatban nem feltétlen ugyanazon a helyen van mint a második járatban 
-            int atszallas1 = -1, atszallas2;
+            int atszallas1 = -1, atszallas2; // ide dob egy warningot azt tudom de csak amiatt mert nincs inicializálva, de jelen esetben ezt nem is kell.
             for (int i = 0; i < talalt.getjaratokszama(); i++)
             {
                 String* megallok = jarathely[i].getmegallok();

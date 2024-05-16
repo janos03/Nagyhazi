@@ -44,7 +44,7 @@
         int idopont;
         int helyszam;
         public:
-        Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0), helyszam(0) {};
+        Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0), helyszam(-1) {};
         Jegy(String n, bool kedv , String kezdo, String cel, int ido){
             nev = n;
             kedvezmenyes = kedv;
