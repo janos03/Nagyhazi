@@ -283,7 +283,7 @@ void Menetrend::menetrendKiir()const{
 
 }
 
-void Jarat::jaratkiir_fajlba(std::ofstream& file) {
+void Jarat::jaratkiir(std::ofstream& file) {
     file << jaratszam << std::endl;
     file << megallokszama << std::endl; 
     for (int i = 0; i < megallokszama; i++) {
@@ -300,14 +300,14 @@ void Jarat::jaratkiir_fajlba(std::ofstream& file) {
     file << std::endl;
 }
 
-void Menetrend::menetrend_kiir_fajlba(const char* filename)const {
+void Menetrend::menetrendKiir(const char* filename)const {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Hiba: A fájl nem nyitható meg." << std::endl;
         return;
     }
     for (int i = 0; i < jaratokszama; i++) {
-        jaratok[i].jaratkiir_fajlba(file);
+        jaratok[i].jaratkiir(file);
     }
     file.close();
 }

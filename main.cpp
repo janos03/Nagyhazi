@@ -125,7 +125,7 @@ int main() {
             case 4: {
 
                 std::cout << "Mentés..." << std::endl;
-                menetrend.menetrend_kiir_fajlba("jaratok");
+                menetrend.menetrendKiir("jaratok");
                 break;
             }
             case 5: {

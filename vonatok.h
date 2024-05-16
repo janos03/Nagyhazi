@@ -24,8 +24,8 @@
         int getjaratszam(){return jaratszam;}
         void jaratkiir();
         void sethely(int n){maxhely = n;}
+        void jaratkiir(std::ofstream& file);
         Jarat& operator=(const Jarat& jarat);
-        void jaratkiir_fajlba(std::ofstream& file);
         bool jegyfoglal(int hely_index);
         ~Jarat(){
             delete[] idopont;
@@ -116,7 +116,7 @@
         int getjegyekszama()const {return jegyekszama;}
         int getjegyekatszallassaldb()const {return jegyekatszallassaldb;}
         void menetrendKiir() const;
-        void menetrend_kiir_fajlba(const char* filename) const;
+        void menetrendKiir(const char* filename) const;
         void menetrendbetolt(const char* filename);
         Menetrend jegykeres(String kezdo, String cel);
 
