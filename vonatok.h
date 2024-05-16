@@ -45,6 +45,7 @@
         int helyszam;
         public:
         Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0), helyszam(-1) {};
+        Jegy(const Jegy& jegy);
         Jegy(String n, bool kedv , String kezdo, String cel, int ido){
             nev = n;
             kedvezmenyes = kedv;
@@ -70,6 +71,7 @@
             kezdomegallo = jegy.kezdomegallo;
             celmegallo = jegy.celmegallo;
             idopont = jegy.idopont;
+            helyszam = jegy.helyszam;
 
             return *this;
         }
@@ -78,12 +80,13 @@
 
 // Jegyatszallas osztály
     class Jegyatszallas: public Jegy{
-    String atszallas;
-
+    String* atszallas;
+    int atszallasdarab;
     public:
-    Jegyatszallas() : Jegy(), atszallas("") {}
-    Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String atsz) 
-        : Jegy(n, kedv, kezdo, cel, ido), atszallas(atsz) {}
+    Jegyatszallas() : Jegy(), atszallas(nullptr) {}
+    Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String* atsz, int atszdb);
+    Jegyatszallas(const Jegyatszallas& jegy); 
+        
 
     void Nyomtat() const override {
         Jegy::Nyomtat(); 
@@ -91,8 +94,11 @@
       
         
     }
+    Jegyatszallas& operator=(const Jegyatszallas& jegy);
     void Nyomtat(const char* filename) const;
-    
+    ~Jegyatszallas(){
+        delete[] atszallas;
+    }
 
 
 };
