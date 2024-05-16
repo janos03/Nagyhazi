@@ -6,6 +6,7 @@
 //----------------------------------------------------------------------------
 //  vonatok.cpp, ebben a fájlban van megvalósítva a legtöbb tagfüggvény, és pár globális függvény is
 //  Minden olyan függvény ami pár sorból áll azt a vonatok.h-ban van megírva
+//  A kommentek gondolatmeneteket is tartalmaznak, ami már nem érvényes ott hagyom jelzem, de legalább látom hogy mit csináltam
 //----------------------------------------------------------------------------
 
 //Tagfüggvények:--------------------------------------------------------
@@ -93,7 +94,7 @@ void Jegy::Nyomtat() const{
 
 //Jegy információk kiírása egy fájlba, "hasonlít" egy valódi jegyhez, ez a valódi nyomtatás
 
-void Jegy::jegykiirfajlba(const char* filename) const{
+void Jegy::Nyomtat(const char* filename) const{
     std::ofstream file(filename, std::ios::app); // Hozzáfüzés mód beállítása
     if (!file.is_open())
     {
@@ -114,8 +115,8 @@ void Jegy::jegykiirfajlba(const char* filename) const{
     file.close();
 }
 
-void Jegyatszallas::jegykiirfajlba(const char* filename) const{
-        Jegy::jegykiirfajlba(filename);
+void Jegyatszallas::Nyomtat(const char* filename) const{
+        Jegy::Nyomtat(filename);
         std::ofstream file(filename, std::ios::app);
         file.exceptions(std::ifstream::badbit);
         file << "Átszállás: " << atszallas << std::endl;
@@ -181,82 +182,100 @@ Menetrend Menetrend::jegykeres(String kezdo, String cel) {
     bool talalt_kezdo = false;
     bool talalt_cel = false;
 
-    for (int i = 0; i < jaratokszama; i++) {
-        String* megallok = jaratok[i].getmegallok();
-        for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
-            if (megallok[j] == kezdo) {
-                talalt_kezdo = true;
-            }
-            if (megallok[j] == cel) {
-                talalt_cel = true;
-            }
-        }
-    }
-
-    if (!talalt_kezdo || !talalt_cel) {
-        std::cout << "Nincs járat az adott útvonalon." << std::endl;
-        return utvonal;
-    }
-
-    int* szulo = new int[jaratokszama]; 
-    bool* bejart = new bool[jaratokszama]{false}; 
-    int* sor = new int[jaratokszama]; 
-    for (int i = 0; i < jaratokszama; i++) {
-        szulo[i] = -1; 
-    }
-
-    int eleje = 0, hatulja = 0; 
-    for (int i = 0; i < jaratokszama; i++) {
-        String* megallok = jaratok[i].getmegallok();
-        for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
-            if (megallok[j] == kezdo) {
-                bejart[i] = true;
-                sor[hatulja++] = i;
-                szulo[i] = -1; 
-                break;
-            }
-        }
-    }
-
-    while (eleje != hatulja) {
-        int aktiv = sor[eleje++];
-        String* megallok = jaratok[aktiv].getmegallok();
-        for (int j = 0; j < jaratok[aktiv].getmegallokszama(); j++) {
-            if (megallok[j] == cel) {
-                utvonal.jarathozzaad(jaratok[aktiv]);
-                int elozo = szulo[aktiv];
-                while (elozo != -1) {
-                    utvonal.jarathozzaad(jaratok[elozo]);
-                    elozo = szulo[elozo];
-                }
-                delete[] bejart;
-                delete[] sor;
-                delete[] szulo;
-                return utvonal;
-            }
-        }
+        // Ellenőrizzük, hogy a kezdő és a cél megálló létezik-e
         for (int i = 0; i < jaratokszama; i++) {
-            if (!bejart[i]) {
-                String* masik_megallok = jaratok[i].getmegallok();
-                for (int k = 0; k < jaratok[i].getmegallokszama(); ++k) {
-                    for (int l = 0; l < jaratok[aktiv].getmegallokszama(); ++l) {
-                        if (masik_megallok[k] == megallok[l]) {
-                            bejart[i] = true;
-                            sor[hatulja++] = i;
-                            szulo[i] = aktiv;
+            String* megallok = jaratok[i].getmegallok();
+            for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
+                if (megallok[j] == kezdo) {
+                    talalt_kezdo = true;
+                }
+                if (megallok[j] == cel) {
+                    talalt_cel = true;
+                }
+            }
+        }
+
+        if (!talalt_kezdo || !talalt_cel) {
+            std::cout << "Nem található útvonal." << std::endl;
+            return utvonal;
+        }
+
+        // Szülő és bejárt adatszerkezetek inicializálása
+        int* szulo = new int[jaratokszama];
+        bool* bejart = new bool[jaratokszama]{false};
+        int* sor = new int[jaratokszama];
+        String* megallok_szulo = new String[jaratokszama];
+        for (int i = 0; i < jaratokszama; ++i) {
+            szulo[i] = -1;
+        }
+
+        int eleje = 0, hatulja = 0;
+
+        // Kezdő állomás beállítása
+        for (int i = 0; i < jaratokszama; i++) {
+            String* megallok = jaratok[i].getmegallok();
+            for (int j = 0; j < jaratok[i].getmegallokszama(); j++) {
+                if (megallok[j] == kezdo) {
+                    bejart[i] = true;
+                    sor[hatulja++] = i;
+                    szulo[i] = -1;
+                    megallok_szulo[i] = kezdo;
+                    break;
+                }
+            }
+        }
+
+        // Bejárás
+        while (eleje != hatulja) {
+            int aktiv = sor[eleje++];
+            String* megallok = jaratok[aktiv].getmegallok();
+
+            for (int j = 0; j < jaratok[aktiv].getmegallokszama(); j++) {
+                if (megallok[j] == cel) {
+                    utvonal.jarathozzaad(jaratok[aktiv]);
+                    String elozo = megallok_szulo[aktiv];
+                    int elozo_jarat = szulo[aktiv];
+
+                    while (elozo_jarat != -1) {
+                        utvonal.jarathozzaad(jaratok[elozo_jarat]);
+                        elozo = megallok_szulo[elozo_jarat];
+                        elozo_jarat = szulo[elozo_jarat];
+                    }
+
+                    delete[] bejart;
+                    delete[] sor;
+                    delete[] szulo;
+                    delete[] megallok_szulo;
+                    return utvonal;
+                }
+            }
+
+            for (int i = 0; i < jaratokszama; i++) {
+                if (!bejart[i]) {
+                    String* masik_megallok = jaratok[i].getmegallok();
+                    for (int k = 0; k < jaratok[i].getmegallokszama(); ++k) {
+                        for (int l = 0; l < jaratok[aktiv].getmegallokszama(); ++l) {
+                            if (masik_megallok[k] == megallok[l]) {
+                                bejart[i] = true;
+                                sor[hatulja++] = i;
+                                szulo[i] = aktiv;
+                                megallok_szulo[i] = masik_megallok[k];
+                                break;
+                            }
                         }
+                        if (bejart[i]) break;
                     }
                 }
             }
         }
-    }
 
-    std::cout << "Nincs járat az adott útvonalon." << std::endl;
-    delete[] bejart;
-    delete[] sor;
-    delete[] szulo;
+        std::cout << "Nem található útvonal." << std::endl;
+        delete[] bejart;
+        delete[] sor;
+        delete[] szulo;
+        delete[] megallok_szulo;
 
-    return utvonal;
+        return utvonal;
     // Helyfoglalás leegyszerűsítve |update|!!!!: megoldottam így ez feleslegesség vált, de a sethely függvényt nem törlöm ki.
 
     /*Jarat* jarathely = utvonal.getjaratok();
@@ -286,6 +305,7 @@ void Menetrend::menetrendKiir()const{
 void Jarat::jaratkiir(std::ofstream& file) {
     file << jaratszam << std::endl;
     file << megallokszama << std::endl; 
+    file << maxhely <<std::endl;
     for (int i = 0; i < megallokszama; i++) {
         file << hely[i] << " "; 
     }
@@ -322,7 +342,8 @@ void Menetrend::menetrendbetolt(const char* filename) {
     while (true) {
         int jaratszam;
         int megallokszam;
-        if (!(file >> jaratszam >> megallokszam)) { // Ellenőrizzük a beolvasás eredményét
+        int maxhely;
+        if (!(file >> jaratszam >> megallokszam >> maxhely)) { // Ellenőrizzük a beolvasás eredményét
             break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
         }
         
@@ -331,18 +352,18 @@ void Menetrend::menetrendbetolt(const char* filename) {
         int* idopontok = new int[megallokszam];
 
         // Adatok beolvasása
-        for (int i = 0; i < megallokszam; ++i) {
+        for (int i = 0; i < megallokszam; i++) {
             if (!(file >> helyek[i])) {
                 break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
             }
         }
-        for (int i = 0; i < megallokszam; ++i) {
+        for (int i = 0; i < megallokszam; i++) {
             megallok_tmp[i] = new char[256]; 
             if (!(file >> megallok_tmp[i])) {
                 break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
             }
         }
-        for (int i = 0; i < megallokszam; ++i) {
+        for (int i = 0; i < megallokszam; i++) {
             if (!(file >> idopontok[i])) {
                 break; // Ha a beolvasás sikertelen, kilépünk a ciklusból
             }
@@ -350,13 +371,13 @@ void Menetrend::menetrendbetolt(const char* filename) {
 
         // String objektumok létrehozása
         String* megallok = new String[megallokszam];
-        for (int i = 0; i < megallokszam; ++i) {
+        for (int i = 0; i < megallokszam; i++) {
             megallok[i] = String(megallok_tmp[i]);
             delete[] megallok_tmp[i];
         }
 
         // Jarat objektum létrehozása és hozzáadása a menetrendhez
-        Jarat jarat(jaratszam, megallokszam, helyek, megallok, idopontok, megallokszam);
+        Jarat jarat(jaratszam, maxhely, helyek, megallok, idopontok, megallokszam);
         jarathozzaad(jarat);
 
         // Dinamikusan foglalt memória felszabadítása
@@ -479,6 +500,7 @@ Menetrend talalt = menetrend.jegykeres(jegy.getkezdomegallo(), jegy.getcelmegall
         std::cout << "Érvénytelen választás. Kérem válasszon újra." << std::endl;
     }
 }
+
 void frissitJarat(Menetrend& menetrend, Jarat& ujJarat) {
     Jarat* jaratok = menetrend.getjaratok();
     int jaratokSzama = menetrend.getjaratokszama();

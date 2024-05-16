@@ -3,7 +3,7 @@
 
 Név: teszt1
 Kedvezményes: igen
-Helyszám: 0
+Helyszám: -1
 Időpont: 1:40
 Kezdőmegálló: A
 Célállomás: C
@@ -13,19 +13,49 @@ Célállomás: C
 
 Név: teszt2
 Kedvezményes: igen
-Helyszám: 0
+Helyszám: -1
 Időpont: 3:20
 Kezdőmegálló: A
 Célállomás: D
 -------------------------
 Átszállás: C
 -----------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: a
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: a
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
 ------------------------
       Menetjegy      
 
 Név: teszt1
 Kedvezményes: igen
-Helyszám: 0
+Helyszám: -1
 Időpont: 1:40
 Kezdőmegálló: A
 Célállomás: C
@@ -33,42 +63,32 @@ Célállomás: C
 ------------------------
       Menetjegy      
 
-Név: teszt2
-Kedvezményes: igen
-Helyszám: 0
+Név: teszt4
+Kedvezményes: nem
+Helyszám: -1
 Időpont: 3:20
+Kezdőmegálló: F
+Célállomás: G
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
 Kezdőmegálló: A
-Célállomás: D
+Célállomás: C
 -------------------------
-Átszállás: C
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: G
+-------------------------
+Átszállás: 0x4ddc228
 -----------------------
-------------------------
-      Menetjegy      
-
-Név: A
-Kedvezményes: igen
-Helyszám: 0
-Időpont: 3:20
-Kezdőmegálló: B
-Célállomás: C
--------------------------
-------------------------
-      Menetjegy      
-
-Név: A
-Kedvezményes: igen
-Helyszám: 0
-Időpont: 3:20
-Kezdőmegálló: B
-Célállomás: C
--------------------------
-------------------------
-      Menetjegy      
-
-Név: A
-Kedvezményes: igen
-Helyszám: 0
-Időpont: 3:20
-Kezdőmegálló: B
-Célállomás: C
--------------------------

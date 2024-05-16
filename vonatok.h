@@ -63,7 +63,7 @@
         void setido(int ido){idopont = ido;}
         void sethelyszam(int hely){helyszam = hely;}
         virtual void Nyomtat()const;
-        virtual void jegykiirfajlba(const char* filename)const;
+        virtual void Nyomtat(const char* filename)const;
         Jegy& operator=(const Jegy& jegy){
             nev = jegy.nev;
             kedvezmenyes = jegy.kedvezmenyes;
@@ -79,6 +79,7 @@
 // Jegyatszallas osztály
     class Jegyatszallas: public Jegy{
     String atszallas;
+
     public:
     Jegyatszallas() : Jegy(), atszallas("") {}
     Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String atsz) 
@@ -86,10 +87,11 @@
 
     void Nyomtat() const override {
         Jegy::Nyomtat(); 
-        std::cout << "Átszállás: " << atszallas << std::endl;
+        std::cout << "Átszállás: " << atszallas << std::endl;;
+      
         
     }
-    void jegykiirfajlba(const char* filename) const;
+    void Nyomtat(const char* filename) const;
     
 
 

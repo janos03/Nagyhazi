@@ -14,7 +14,7 @@
 void displayMenu() {
     std::cout << "----- MENÜ -----" << std::endl;
     std::cout << "1. Jegyvásárlás" << std::endl;
-    std::cout << "2. Jegykeresés" << std::endl;
+    std::cout << "2. Menetrend keresés" << std::endl;
     std::cout << "3. Kilépés" << std::endl;
     std::cout << "4. Mentés" << std::endl;
     std::cout << "5. Betöltés" << std::endl;
@@ -113,12 +113,12 @@ int main() {
                 for (int i = 0; i < menetrend.getjegyekszama(); i++)
                 {
                     jegyek[i].Nyomtat();
-                    jegyek[i].jegykiirfajlba("tesztjegy");
+                    jegyek[i].Nyomtat("tesztjegy");
                 }
                 for (int i = 0; i < menetrend.getjegyekatszallassaldb(); i++)
                 {
                     jegyekat[i].Nyomtat();
-                    jegyekat[i].jegykiirfajlba("tesztjegy");
+                    jegyekat[i].Nyomtat("tesztjegy");
 
                 }
                 break; }      
@@ -152,12 +152,12 @@ int main() {
                 for (int i = 0; i < menetrend.getjegyekszama(); i++)
                 {
                     jegyek[i].Nyomtat();
-                    jegyek[i].jegykiirfajlba("tesztjegy");
+                    jegyek[i].Nyomtat("tesztjegy");
                 }
                 for (int i = 0; i < menetrend.getjegyekatszallassaldb(); i++)
                 {
                     jegyekat[i].Nyomtat();
-                    jegyekat[i].jegykiirfajlba("tesztjegy");
+                    jegyekat[i].Nyomtat("tesztjegy");
 
                 }
                 
