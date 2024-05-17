@@ -1,6 +1,6 @@
 #ifndef VONATOK_H
 #define VONATOK_H
-#include "string5.h"
+#include "string12.h"
 
 // Jarat osztály
     class Jarat {
@@ -45,7 +45,6 @@
         int helyszam;
         public:
         Jegy() : nev(""), kedvezmenyes(false), kezdomegallo(""), celmegallo(""), idopont(0), helyszam(-1) {};
-        Jegy(const Jegy& jegy);
         Jegy(String n, bool kedv , String kezdo, String cel, int ido){
             nev = n;
             kedvezmenyes = kedv;
@@ -71,7 +70,6 @@
             kezdomegallo = jegy.kezdomegallo;
             celmegallo = jegy.celmegallo;
             idopont = jegy.idopont;
-            helyszam = jegy.helyszam;
 
             return *this;
         }
@@ -80,29 +78,21 @@
 
 // Jegyatszallas osztály
     class Jegyatszallas: public Jegy{
-    String* atszallas;
-    int atszallasdarab;
+    String atszallas;
+
     public:
-    Jegyatszallas() : Jegy(), atszallas(nullptr) {}
-    Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String* atsz, int atszdb);
-    Jegyatszallas(const Jegyatszallas& jegy); 
-        
+    Jegyatszallas() : Jegy(), atszallas("") {}
+    Jegyatszallas(String n, bool kedv, String kezdo, String cel, int ido, String atsz) 
+        : Jegy(n, kedv, kezdo, cel, ido), atszallas(atsz) {}
 
     void Nyomtat() const override {
         Jegy::Nyomtat(); 
-        std::cout << "Átszállás: " ;
-        for (int i = 0; i < atszallasdarab; i++)
-        {
-        std::cout << atszallas[i] << " ";
-            
-        }
-        std::cout << std::endl;
+        std::cout << "Átszállás: " << atszallas << std::endl;;
+      
+        
     }
-    Jegyatszallas& operator=(const Jegyatszallas& jegy);
     void Nyomtat(const char* filename) const;
-    ~Jegyatszallas(){
-        delete[] atszallas;
-    }
+    
 
 
 };

@@ -1,0 +1,136 @@
+------------------------
+      Menetjegy      
+
+Név: teszt1
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: teszt2
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 3:20
+Kezdőmegálló: A
+Célállomás: D
+-------------------------
+Átszállás: C
+-----------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: a
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: a
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: teszt1
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: teszt4
+Kedvezményes: nem
+Helyszám: -1
+Időpont: 3:20
+Kezdőmegálló: F
+Célállomás: G
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: G
+-------------------------
+Átszállás: 0x4ddc228
+-----------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 1
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: 2
+Időpont: 1:40
+Kezdőmegálló: A
+Célállomás: C
+-------------------------
+------------------------
+      Menetjegy      
+
+Név: A
+Kedvezményes: igen
+Helyszám: -1
+Időpont: 0:1
+Kezdőmegálló: A
+Célállomás: D
+-------------------------
+Átszállás: C
+-----------------------

@@ -1,5 +1,5 @@
 #include "vonatok.h"
-#include "string5.h"
+#include "string12.h"
 #include <iostream>
 
 //-------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ int main() {
     std::cin >> idopont;
     if (idopont < 0)
     {
-        std::cout << "Az időpont nem lehet negatív szám" << std::endl;
+        std::cout << "Az időpont nem lehet negatív szám";
         break;
     }
     
@@ -142,16 +142,10 @@ int main() {
                 Jegy teszt2("teszt2", false, "A", "D", 200);
                 Jegy teszt3("teszt3", true,"B", "F",100 );
                 Jegy teszt4("teszt4", false, "F", "G", 200);
-                Jegy teszt5("teszt5", true, "A", "G", 1);
                 jegyteszt(menetrend, teszt1);
                 jegyteszt(menetrend, teszt2);
                 jegyteszt(menetrend, teszt3);
                 jegyteszt(menetrend, teszt4);
-                jegyteszt(menetrend, teszt5);
-                std::cout << "Most teszteljük, hogy a hely működik-e" << std::endl;
-                jegyteszt(menetrend, teszt1);
-                jegyteszt(menetrend, teszt1);
-                jegyteszt(menetrend, teszt1);
                 menetrend.menetrendKiir();
                 Jegy* jegyek = menetrend.getjegyek();
                 Jegyatszallas* jegyekat = menetrend.getjegyekatszallassal();
@@ -180,16 +174,7 @@ int main() {
                 std::cout << "Adja meg a megallok számát: ";
                 std::cin >> megallok_szama;
 
-                if (megallok_szama < 0 || maxh < 0)
-                {
-                    std::cout << "Nem lehet negatív szám egyik se...." << std::endl;
-                    break;
-                }
-                
-
                 // Dinamikus tömbök létrehozása a megallok és idopontok tárolásához
-                try{
-
                 String* megallok = new String[megallok_szama];
                 int* idopontok = new int[megallok_szama];
                 int* helyek = new int[megallok_szama];
@@ -197,20 +182,15 @@ int main() {
                 for (int i = 0; i < megallok_szama; ++i) {
                     char megallo[100];
                     int idopont;
-                   
 
                     std::cout << "Adja meg az " << i + 1 << ". állomást: ";
                     std::cin >> megallo;
                     std::cout << "Adja meg az " << i + 1 << ". állomás indulási időpontját: ";
                     std::cin >> idopont;
-                  
-                    
-                    
                     helyek[i] = 0;
                     megallok[i] = String(megallo);
                     idopontok[i] = idopont;
                 }
-                
 
                 // Létrehozzuk a Jarat objektumot az adatokból
                 int jaratszam = menetrend.getjaratokszama()+1;
@@ -224,11 +204,6 @@ int main() {
                 delete[] megallok;
                 delete[] idopontok;
                 delete[] helyek;
-                }
-                catch(std::bad_alloc e){
-                    std::cerr << "Hiba:" << e.what() << std::endl;
-                    std::cout << "miu" << std::endl;
-                }
                 std::cout << "Járat sikeresen hozzáadva." << std::endl;
             break;
 

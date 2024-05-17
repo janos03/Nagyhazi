@@ -1,5 +1,5 @@
-#ifndef STRING_H
-#define STRING_H
+#ifndef STRING12_H
+#define STRING12_H
 
 
 #include <iostream>
